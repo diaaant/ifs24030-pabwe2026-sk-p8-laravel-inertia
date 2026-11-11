@@ -7,7 +7,7 @@
     },
     "dependencies": {
         "@inertiajs/react": "^2.0.0",
-        "@toast-ui/editor": "^3.2.2",
+        "@toast-ui/editor": "^3.1.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0"
     },

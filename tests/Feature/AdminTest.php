@@ -17,9 +17,15 @@ class AdminTest extends TestCase
         return User::factory()->admin()->create();
     }
 
-    public function test_member_and_guest_cannot_access_admin(): void
+    public function test_member_cannot_access_admin(): void
     {
-        $this->actingAs(User::factory()->create())->get('/admin/users')->assertForbidden();
+        $this->actingAs(User::factory()->create())
+            ->get('/admin/users')
+            ->assertForbidden();
+    }
+
+    public function test_guest_cannot_access_admin(): void
+    {
         $this->get('/admin/posts')->assertRedirect('/login');
     }
 

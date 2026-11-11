@@ -8,9 +8,10 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
-use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\Xls as XlsReader;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Throwable;
 
@@ -50,7 +51,6 @@ class PostExcelService
             }
 
             foreach ($values as $i => $value) {
-                // Selalu sebagai string agar isi diawali "=" tidak dieksekusi sebagai rumus.
                 $sheet->setCellValueExplicit([$i + 1, $row], (string) $value, DataType::TYPE_STRING);
             }
             $row++;
@@ -69,7 +69,7 @@ class PostExcelService
         $spreadsheet = $this->build($posts, $withAuthor);
 
         return response()->streamDownload(
-            fn () => (new Xlsx($spreadsheet))->save('php://output'),
+            fn () => (new XlsxWriter($spreadsheet))->save('php://output'),
             $filename,
             ['Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
         );
@@ -82,8 +82,20 @@ class PostExcelService
      */
     public function import(User $user, UploadedFile $file): int
     {
+        // Paksa reader sesuai ekstensi. JANGAN pakai IOFactory::load(), karena
+        // untuk isi teks biasa IOFactory jatuh ke CSV reader (tanpa magic
+        // number) dan "berhasil" membaca file sampah sebagai CSV kosong.
+        $ext = strtolower($file->getClientOriginalExtension());
+
+        $reader = match ($ext) {
+            'xlsx' => new XlsxReader(),
+            'xls' => new XlsReader(),
+            default => throw new InvalidArgumentException('Format file harus .xlsx atau .xls.'),
+        };
+
         try {
-            $rows = IOFactory::load($file->getRealPath())
+            $reader->setReadDataOnly(true);
+            $rows = $reader->load($file->getRealPath())
                 ->getActiveSheet()
                 ->toArray(null, false, false, false);
         } catch (Throwable $e) {

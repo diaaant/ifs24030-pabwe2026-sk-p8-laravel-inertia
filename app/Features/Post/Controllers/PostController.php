@@ -16,6 +16,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Throwable;
 
 class PostController extends Controller
 {
@@ -102,12 +103,18 @@ class PostController extends Controller
 
     public function import(Request $request): RedirectResponse
     {
-        $request->validate(['file' => ['required', 'file', 'mimes:xlsx,xls', 'max:5120']]);
+        // Jangan pakai "mimes": aturan itu memeriksa MIME isi file, sehingga
+        // .xlsx korup gagal validasi dan tidak sampai ke try/catch.
+        $request->validate(['file' => ['required', 'file', 'max:5120']]);
 
         try {
             $count = $this->excel->import($request->user(), $request->file('file'));
         } catch (InvalidArgumentException $e) {
             return back()->with('error', $e->getMessage());
+        } catch (Throwable $e) {
+            report($e);
+
+            return back()->with('error', 'Berkas Excel tidak dapat dibaca. Pastikan formatnya .xlsx yang valid.');
         }
 
         return back()->with('success', "{$count} artikel berhasil diimpor.");

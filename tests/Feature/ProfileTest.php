@@ -16,12 +16,13 @@ class ProfileTest extends TestCase
 
     public function test_edit_page_renders_and_shares_auth_user(): void
     {
+        // Cek guest dulu (actingAs mempersist state auth untuk request berikutnya).
+        $this->get('/')->assertInertia(fn (Assert $p) => $p->where('auth.user', null));
+
         $user = User::factory()->create();
 
         $this->actingAs($user)->get('/profile')->assertInertia(fn (Assert $p) => $p
             ->component('Profile/Edit')->where('auth.user.id', $user->id)->where('auth.user.role', 'member'));
-
-        $this->get('/')->assertInertia(fn (Assert $p) => $p->where('auth.user', null));
     }
 
     public function test_update_profile_password_and_photo(): void
