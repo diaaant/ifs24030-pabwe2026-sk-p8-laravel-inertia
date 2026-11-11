@@ -68,10 +68,6 @@ class PostExcelTest extends TestCase
         $this->assertDatabaseCount('posts', 0);
     }
 
-    // =====================================================================
-    // TEST TAMBAHAN UNTUK MENUTUPI COVERAGE 100% (SESUAI KETENTUAN JENKINS)
-    // =====================================================================
-
     public function test_import_handles_xls_extension(): void
     {
         $user = User::factory()->create();
@@ -106,5 +102,24 @@ class PostExcelTest extends TestCase
 
         $this->actingAs($user)->post('/dashboard/posts/import', ['file' => $file])
             ->assertSessionHas('error', 'Berkas Excel tidak dapat dibaca. Pastikan formatnya .xlsx yang valid.');
+    }
+
+    // =====================================================================
+    // TEST TAMBAHAN UNTUK MENUTUPI SISA COVERAGE (BLOK $withAuthor = true)
+    // =====================================================================
+    public function test_build_excel_with_author_data(): void
+    {
+        $user = User::factory()->create(['username' => 'penulis']);
+        Post::factory()->count(2)->create(['user_id' => $user->id]);
+
+        $posts = Post::with('user')->get();
+        $excel = app(PostExcelService::class);
+        
+        // Memastikan baris $withAuthor = true dieksekusi
+        $spreadsheet = $excel->build($posts, true);
+        $this->assertNotNull($spreadsheet);
+
+        $response = $excel->download($posts, 'test-admin.xlsx', true);
+        $this->assertNotNull($response);
     }
 }
