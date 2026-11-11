@@ -65,6 +65,20 @@ class AiGeneratorTest extends TestCase
             ->assertSessionHas('error', 'Tidak dapat menghubungi layanan OpenAI.');
     }
 
+    // =====================================================================
+    // TEST TAMBAHAN UNTUK MENUTUPI SISA COVERAGE (Baris ke-45)
+    // =====================================================================
+    public function test_generate_handles_empty_posts_response(): void
+    {
+        // Mengirim array kosong agar respons JSON OpenAI berisi {"posts":[]}
+        // Ini akan memicu validasi if (! is_array($posts) || $posts === [])
+        $this->fakeOpenAi([]);
+
+        $this->actingAs(User::factory()->create())
+            ->post('/dashboard/posts/ai-generate', ['count' => 1])
+            ->assertSessionHas('error', 'Respons OpenAI tidak berisi artikel yang valid.');
+    }
+
     public function test_save_batch_creates_drafts(): void
     {
         $user = User::factory()->create();
