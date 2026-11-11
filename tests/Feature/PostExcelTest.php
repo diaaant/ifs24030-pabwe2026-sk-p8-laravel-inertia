@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Features\Post\Models\Post;
+use App\Features\Post\Services\PostExcelService;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -65,5 +66,45 @@ class PostExcelTest extends TestCase
         $this->actingAs($user)->post('/dashboard/posts/import', ['file' => $garbage])->assertSessionHas('error');
         $this->actingAs($user)->post('/dashboard/posts/import', [])->assertSessionHasErrors('file');
         $this->assertDatabaseCount('posts', 0);
+    }
+
+    // =====================================================================
+    // TEST TAMBAHAN UNTUK MENUTUPI COVERAGE 100% (SESUAI KETENTUAN JENKINS)
+    // =====================================================================
+
+    public function test_import_handles_xls_extension(): void
+    {
+        $user = User::factory()->create();
+        
+        // Menguji cabang (branch) 'xls' => new XlsReader() di dalam PostExcelService
+        $garbage = UploadedFile::fake()->createWithContent('rusak.xls', 'bukan excel');
+
+        $this->actingAs($user)->post('/dashboard/posts/import', ['file' => $garbage])
+            ->assertSessionHas('error');
+    }
+
+    public function test_import_rejects_unsupported_extension(): void
+    {
+        $user = User::factory()->create();
+        
+        // Menguji cabang 'default' di dalam PostExcelService (selain xlsx/xls ditolak)
+        $file = UploadedFile::fake()->create('data.csv', 100);
+
+        $this->actingAs($user)->post('/dashboard/posts/import', ['file' => $file])
+            ->assertSessionHas('error', 'Format file harus .xlsx atau .xls.');
+    }
+
+    public function test_import_handles_generic_throwable_error(): void
+    {
+        $user = User::factory()->create();
+        $file = UploadedFile::fake()->create('test.xlsx', 100);
+
+        // Menguji blok catch (Throwable $e) di PostController.
+        $this->mock(PostExcelService::class, function ($mock) {
+            $mock->shouldReceive('import')->andThrow(new \Exception('Simulasi error sistem'));
+        });
+
+        $this->actingAs($user)->post('/dashboard/posts/import', ['file' => $file])
+            ->assertSessionHas('error', 'Berkas Excel tidak dapat dibaca. Pastikan formatnya .xlsx yang valid.');
     }
 }
