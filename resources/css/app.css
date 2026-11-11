@@ -1,0 +1,42 @@
+@import 'tailwindcss';
+
+@source '../js/**/*.jsx';
+@source '../views/**/*.blade.php';
+
+@theme {
+    --font-sans: 'Public Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+}
+
+@layer base {
+    /* Semua elemen interaktif menampilkan cursor pointer */
+    button,
+    [role='button'],
+    a[href],
+    select,
+    summary,
+    label[for],
+    input[type='checkbox'],
+    input[type='file'],
+    input[type='submit'] {
+        cursor: pointer;
+    }
+
+    button:disabled {
+        cursor: not-allowed;
+    }
+}
+
+@keyframes progress-slide {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(400%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-spin,
+    [class*='animate-[progress'] {
+        animation-duration: 3s;
+    }
+}
+
+.toastui-editor-defaults .toastui-editor-contents { font-family: var(--font-serif); font-size: 1.05rem; }
