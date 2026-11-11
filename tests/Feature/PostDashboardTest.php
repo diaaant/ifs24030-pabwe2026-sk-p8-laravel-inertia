@@ -40,7 +40,7 @@ class PostDashboardTest extends TestCase
         Storage::fake('public');
         $user = User::factory()->create();
 
-        $this->actingAs($user)->post('/dashboard/posts', $this->payload(['cover' => UploadedFile::fake()->image('c.jpg')]))
+        $this->actingAs($user)->post('/dashboard/posts', $this->payload(['cover' => $this->fakeImage('c.jpg')]))
             ->assertRedirect('/dashboard/posts');
         $this->actingAs($user)->post('/dashboard/posts', $this->payload(['is_published' => true]));
 
@@ -80,7 +80,7 @@ class PostDashboardTest extends TestCase
         $user = User::factory()->create();
         $post = Post::factory()->create(['user_id' => $user->id]);
 
-        $this->actingAs($user)->put("/dashboard/posts/{$post->id}", $this->payload(['is_published' => true, 'cover' => UploadedFile::fake()->image('a.png')]))
+        $this->actingAs($user)->put("/dashboard/posts/{$post->id}", $this->payload(['is_published' => true, 'cover' => $this->fakeImage('a.png')]))
             ->assertRedirect();
         $post->refresh();
         $this->assertTrue($post->is_published);
@@ -114,12 +114,12 @@ class PostDashboardTest extends TestCase
         $user = User::factory()->create();
         $post = Post::factory()->create(['user_id' => $user->id]);
 
-        $this->actingAs($user)->post("/dashboard/posts/{$post->id}/cover", ['cover' => UploadedFile::fake()->image('1.jpg')]);
+        $this->actingAs($user)->post("/dashboard/posts/{$post->id}/cover", ['cover' => $this->fakeImage('1.jpg')]);
         $old = $post->refresh()->cover_image_path;
         Storage::disk('public')->assertExists($old);
         $this->assertNotNull($post->cover_url);
 
-        $this->actingAs($user)->post("/dashboard/posts/{$post->id}/cover", ['cover' => UploadedFile::fake()->image('2.jpg')]);
+        $this->actingAs($user)->post("/dashboard/posts/{$post->id}/cover", ['cover' => $this->fakeImage('2.jpg')]);
         Storage::disk('public')->assertMissing($old);
 
         $this->actingAs($user)->delete("/dashboard/posts/{$post->id}/cover");
@@ -133,7 +133,7 @@ class PostDashboardTest extends TestCase
         Storage::fake('public');
         $user = User::factory()->create();
         $post = Post::factory()->create(['user_id' => $user->id]);
-        $this->actingAs($user)->post("/dashboard/posts/{$post->id}/cover", ['cover' => UploadedFile::fake()->image('1.jpg')]);
+        $this->actingAs($user)->post("/dashboard/posts/{$post->id}/cover", ['cover' => $this->fakeImage('1.jpg')]);
         $path = $post->refresh()->cover_image_path;
 
         $this->actingAs($user)->delete("/dashboard/posts/{$post->id}")->assertRedirect('/dashboard/posts');

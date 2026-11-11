@@ -7,7 +7,19 @@ PostgreSQL, PhpSpreadsheet (ekspor/impor Excel), TOAST UI Editor/Viewer, dan int
 > (sama seperti alur modul: "tiap tahap menyebut file yang perlu dibuat/diubah").
 > Ganti nama folder/zip `username-…` dengan username Anda, mis. `abdullah_ubaid-pabwe2026-sk-p8-laravel-inertia`.
 
-## 1. Pasang (otomatis)
+## 0. Windows (PowerShell) — cara tercepat
+
+```powershell
+cd "D:\SARJANA SEMESTER 5\P8"
+laravel new ifs24030-pabwe2026-sk-p8-laravel-inertia --database=pgsql --phpunit --no-node --no-boost --no-interaction
+cd ifs24030-pabwe2026-sk-p8-laravel-inertia
+powershell -ExecutionPolicy Bypass -File "<folder-hasil-ekstrak-zip>\setup.ps1"
+php artisan serve
+```
+Catatan Windows: tulis constraint Composer sebagai `2.*` (bukan `^2.0`, karena `^` hilang di cmd) dan pakai `--no-scripts`.
+Jika PHP Anda tidak punya `pdo_pgsql` (mis. Herd Lite), skrip otomatis memakai SQLite untuk lokal.
+
+## 1. Pasang (otomatis, Linux/macOS/Git Bash)
 
 ```bash
 unzip username-pabwe2026-sk-p8-laravel-inertia.zip
@@ -16,7 +28,7 @@ bash setup.sh
 ```
 
 `setup.sh` menjalankan `laravel new … --database=pgsql --phpunit --no-node --no-boost --no-interaction`, menyalin overlay,
-`composer require inertiajs/inertia-laravel:^2.0 phpoffice/phpspreadsheet`, `npm install && npm run build`,
+`composer require "inertiajs/inertia-laravel:2.*" phpoffice/phpspreadsheet`, `npm install && npm run build`,
 menambah `force_https` di `config/app.php`, membuat database `pabwe_p8_blog`, migrasi + seed, dan `storage:link`.
 
 ## 2. Pasang (manual, Windows)
@@ -25,7 +37,7 @@ menambah `force_https` di `config/app.php`, membuat database `pabwe_p8_blog`, mi
 laravel new USERNAME-pabwe2026-sk-p8-laravel-inertia --database=pgsql --phpunit --no-node --no-boost --no-interaction
 ```
 1. Salin seluruh isi folder ini ke proyek tersebut (timpa file yang sama).
-2. `composer require inertiajs/inertia-laravel:^2.0 phpoffice/phpspreadsheet`
+2. `composer require "inertiajs/inertia-laravel:2.*" phpoffice/phpspreadsheet`
 3. `npm install` lalu `npm run build`
 4. Di `config/app.php` tambahkan: `'force_https' => env('APP_FORCE_HTTPS', false),`
 5. `copy .env.example .env`, `php artisan key:generate`, isi `OPENAI_API_KEY` bila ingin memakai AI.

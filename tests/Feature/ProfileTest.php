@@ -32,7 +32,7 @@ class ProfileTest extends TestCase
         $this->actingAs($user)->put('/profile', [
             'name' => 'Nama Baru', 'username' => 'baru', 'email' => 'baru@example.com',
             'password' => 'passwordbaru', 'password_confirmation' => 'passwordbaru',
-            'photo' => UploadedFile::fake()->image('p.jpg'),
+            'photo' => $this->fakeImage('p.jpg'),
         ])->assertSessionHas('success');
 
         $user->refresh();
@@ -41,7 +41,7 @@ class ProfileTest extends TestCase
         $this->assertNotNull($user->profile_photo_url);
         $old = $user->profile_photo_path;
 
-        $this->actingAs($user)->put('/profile', ['name' => 'N', 'username' => 'baru', 'photo' => UploadedFile::fake()->image('q.jpg')]);
+        $this->actingAs($user)->put('/profile', ['name' => 'N', 'username' => 'baru', 'photo' => $this->fakeImage('q.jpg')]);
         Storage::disk('public')->assertMissing($old);
         $this->assertTrue(Hash::check('passwordbaru', $user->refresh()->password));
     }

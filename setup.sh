@@ -18,7 +18,7 @@ cd "$NAME-laravel"
 # Salin overlay (timpa file bawaan skeleton)
 rsync -a --exclude 'setup.sh' --exclude 'README.md' "$SRC"/ ./
 
-composer require inertiajs/inertia-laravel:^2.0 phpoffice/phpspreadsheet
+composer require "inertiajs/inertia-laravel:2.*" phpoffice/phpspreadsheet
 npm install
 npm run build
 
