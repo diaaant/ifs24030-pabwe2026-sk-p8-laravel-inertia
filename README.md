@@ -5,13 +5,13 @@ PostgreSQL, PhpSpreadsheet (ekspor/impor Excel), TOAST UI Editor/Viewer, dan int
 
 > Folder ini adalah **overlay**: berisi semua file yang dibuat/diubah di atas proyek hasil `laravel new`
 > (sama seperti alur modul: "tiap tahap menyebut file yang perlu dibuat/diubah").
-> Nama proyek: `ifs24030-pabwe2026-sk-p8-laravel-inertia` (format modul: `{username}-pabwe2026-sk-p8-laravel-inertia`).
+> Ganti nama folder/zip `username-…` dengan username Anda, mis. `abdullah_ubaid-pabwe2026-sk-p8-laravel-inertia`.
 
 ## 1. Pasang (otomatis)
 
 ```bash
-unzip ifs24030-pabwe2026-sk-p8-laravel-inertia.zip
-cd ifs24030-pabwe2026-sk-p8-laravel-inertia
+unzip username-pabwe2026-sk-p8-laravel-inertia.zip
+cd username-pabwe2026-sk-p8-laravel-inertia
 bash setup.sh
 ```
 
@@ -22,7 +22,7 @@ menambah `force_https` di `config/app.php`, membuat database `pabwe_p8_blog`, mi
 ## 2. Pasang (manual, Windows)
 
 ```bash
-laravel new ifs24030-pabwe2026-sk-p8-laravel-inertia --database=pgsql --phpunit --no-node --no-boost --no-interaction
+laravel new USERNAME-pabwe2026-sk-p8-laravel-inertia --database=pgsql --phpunit --no-node --no-boost --no-interaction
 ```
 1. Salin seluruh isi folder ini ke proyek tersebut (timpa file yang sama).
 2. `composer require inertiajs/inertia-laravel:^2.0 phpoffice/phpspreadsheet`
