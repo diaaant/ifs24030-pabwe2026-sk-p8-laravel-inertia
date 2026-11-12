@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <!-- Meta Description untuk SEO -->
     <meta name="description" content="BlogVerse Pro, tempat membaca dan menerbitkan artikel berkualitas. Baca bebas tanpa akun atau mulai terbitkan artikel Anda sendiri.">
     
     <title inertia>{{ config('app.name', 'BlogVerse Pro') }}</title>

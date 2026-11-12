@@ -10,7 +10,12 @@ function ArticleCard({ post }) {
         <article className="group flex flex-col border-b border-slate-200 pb-6">
             <Link href={`/articles/${post.slug}`} className="block overflow-hidden rounded-lg bg-slate-200">
                 {post.cover_url ? (
-                    <img src={post.cover_url} alt="" className="aspect-[16/10] w-full object-cover transition group-hover:scale-[1.02]" />
+                    <img 
+                        src={post.cover_url} 
+                        alt="" 
+                        loading="lazy" 
+                        className="aspect-[16/10] w-full object-cover transition group-hover:scale-[1.02]" 
+                    />
                 ) : (
                     <div className="flex aspect-[16/10] items-center justify-center bg-gradient-to-br from-indigo-900 to-indigo-600 px-6 text-center font-serif text-xl font-semibold text-white/90">
                         {post.category}
@@ -18,7 +23,6 @@ function ArticleCard({ post }) {
                 )}
             </Link>
             <p className="mt-3 text-sm font-medium text-indigo-800">{post.category}</p>
-            {/* PERBAIKAN: h3 diubah menjadi h2 agar urutan heading valid */}
             <h2 className="mt-1 font-serif text-xl font-bold leading-snug text-slate-900">
                 <Link href={`/articles/${post.slug}`} className="hover:text-indigo-800">{post.title}</Link>
             </h2>
@@ -58,7 +62,6 @@ export default function PostIndex({ hero, posts, filters, categories }) {
             ) : (
                 <section className="bg-white border-b border-slate-200 py-10">
                     <div className="mx-auto max-w-6xl px-4">
-                        {/* PERBAIKAN: Menambahkan h1 untuk halaman daftar artikel */}
                         <h1 className="font-serif text-3xl font-bold text-slate-900">Semua Artikel</h1>
                     </div>
                 </section>
@@ -68,8 +71,16 @@ export default function PostIndex({ hero, posts, filters, categories }) {
                 <form onSubmit={(e) => { e.preventDefault(); go({}); }} className="flex flex-col gap-3 sm:flex-row">
                     <div className="relative flex-1">
                         <Icon name="search" className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
-                        <input type="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Cari judul atau isi artikel…"
-                            className={`${inputClass} pl-9`} aria-label="Cari artikel" />
+                        <input 
+                            type="search" 
+                            name="search"
+                            id="search"
+                            value={search} 
+                            onChange={(e) => setSearch(e.target.value)} 
+                            placeholder="Cari judul atau isi artikel…"
+                            className={`${inputClass} pl-9`} 
+                            aria-label="Cari artikel" 
+                        />
                     </div>
                     <button type="submit" className="rounded-md bg-indigo-800 px-5 py-2 text-sm font-semibold text-white hover:bg-indigo-900">Cari</button>
                 </form>
