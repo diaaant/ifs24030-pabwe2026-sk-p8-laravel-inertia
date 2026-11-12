@@ -4,22 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <!-- Tambahan Meta Description untuk SEO -->
+    <!-- Meta Description untuk SEO -->
     <meta name="description" content="BlogVerse Pro, tempat membaca dan menerbitkan artikel berkualitas. Baca bebas tanpa akun atau mulai terbitkan artikel Anda sendiri.">
     
     <title inertia>{{ config('app.name', 'BlogVerse Pro') }}</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- Memuat Font secara Asynchronous agar tidak Render-Blocking -->
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Public+Sans:wght@400;500;600&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Public+Sans:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
-    <noscript>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Public+Sans:wght@400;500;600&display=swap">
-    </noscript>
-
     @viteReactRefresh
     @vite(['resources/css/app.css', 'resources/js/app.jsx'])
     @inertiaHead
