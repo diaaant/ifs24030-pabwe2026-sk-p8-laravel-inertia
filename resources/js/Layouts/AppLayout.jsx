@@ -76,7 +76,8 @@ function PublicShell({ children }) {
                         <Link href="/register" className="hover:text-white">Register</Link>
                     </nav>
                 </div>
-                <p className="border-t border-slate-800 py-4 text-center text-xs text-slate-500">© {new Date().getFullYear()} BlogVerse Pro</p>
+                {/* PERBAIKAN: text-slate-500 diubah menjadi text-slate-400 */}
+                <p className="border-t border-slate-800 py-4 text-center text-xs text-slate-400">© {new Date().getFullYear()} BlogVerse Pro</p>
             </footer>
         </div>
     );
