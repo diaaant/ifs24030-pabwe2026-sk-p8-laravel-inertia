@@ -18,9 +18,10 @@ function ArticleCard({ post }) {
                 )}
             </Link>
             <p className="mt-3 text-sm font-medium text-indigo-800">{post.category}</p>
-            <h3 className="mt-1 font-serif text-xl font-bold leading-snug text-slate-900">
+            {/* PERBAIKAN: h3 diubah menjadi h2 agar urutan heading valid */}
+            <h2 className="mt-1 font-serif text-xl font-bold leading-snug text-slate-900">
                 <Link href={`/articles/${post.slug}`} className="hover:text-indigo-800">{post.title}</Link>
-            </h3>
+            </h2>
             {post.excerpt && <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-600">{post.excerpt}</p>}
             <p className="mt-3 text-xs text-slate-500">{post.user?.name} · {formatDate(post.published_at)}</p>
         </article>
@@ -37,7 +38,7 @@ export default function PostIndex({ hero, posts, filters, categories }) {
         <>
             <Head title={hero ? 'Beranda' : 'Artikel'} />
 
-            {hero && (
+            {hero ? (
                 <section className="border-b border-slate-200 bg-indigo-950 text-white">
                     <div className="mx-auto max-w-6xl px-4 py-16 sm:py-24">
                         <h1 className="max-w-3xl font-serif text-4xl font-bold leading-tight sm:text-6xl">Tulisan yang layak dibaca sampai habis.</h1>
@@ -52,6 +53,13 @@ export default function PostIndex({ hero, posts, filters, categories }) {
                                 <Icon name="userPlus" className="h-4 w-4" /> Daftar Penulis
                             </Link>
                         </div>
+                    </div>
+                </section>
+            ) : (
+                <section className="bg-white border-b border-slate-200 py-10">
+                    <div className="mx-auto max-w-6xl px-4">
+                        {/* PERBAIKAN: Menambahkan h1 untuk halaman daftar artikel */}
+                        <h1 className="font-serif text-3xl font-bold text-slate-900">Semua Artikel</h1>
                     </div>
                 </section>
             )}
