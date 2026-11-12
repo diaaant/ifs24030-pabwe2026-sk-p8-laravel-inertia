@@ -16,10 +16,11 @@ export default defineConfig({
         watch: { ignored: ['**/storage/framework/views/**'] },
     },
     build: {
+        sourcemap: true, // Memperbaiki error "Missing source maps"
+        target: 'esnext', // Memperbaiki error "Legacy JavaScript"
         chunkSizeWarningLimit: 1000,
         rollupOptions: {
             output: {
-                // Memecah file JS besar menjadi beberapa bagian (Vendor)
                 manualChunks: {
                     'vendor-react': ['react', 'react-dom', '@inertiajs/react'],
                     'vendor-editor': ['@toast-ui/editor'],
